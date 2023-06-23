@@ -2,15 +2,15 @@ import image from '../assets/Music.gif'
 import wave1 from '../assets/wave1-login.png'
 import wave2 from '../assets/wave2-login.png'
 import backgroundTriangle from '../assets/background-decoration.png'
+import headphone from '../assets/headphones.png'
 import { TbHeadphonesFilled } from "react-icons/tb";
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { UserService } from '../services/User';
 
 function Login() {
-  const [users, setUsers] = useState([]);
-  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');;
@@ -19,39 +19,9 @@ function Login() {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const baseURL = "http://localhost:8080/auth";
-
-    // axios.get(baseURL +"/all")
-    //   .then((response) => {
-    //     setUsers(response.data);
-    //     console.log("response");
-    //     console.log(response.data);
-    //     console.log(users);
-        
-    //   })
-    //   .catch((error) => {
-    //     console.log("error");
-    //     console.log(error);
-    //   });
-
-    const data = {
-      username: username,
-      password: password
-    };
-
-    axios.post(baseURL + '/login', data)
-      .then((response) => {
-        setToken(response.data.token);
-        console.log('Token:', response.data.token);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
+    UserService(username, password, setToken);
   };
 
-  // useEffect(() => {
-  //   console.log("Updated users:", users);
-  // }, [users]);
 
   return (
     <div className="h-screen bg-purple relative">
