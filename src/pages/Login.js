@@ -36,11 +36,11 @@ function Login() {
               <label>
                 Usuario
               </label>
-              <input placeholder='Ej. gerardo' className="w-full border rounded px-3 py-1 border-border-gray mb-5" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <input placeholder='Ej. gerardo' required className="w-full border rounded px-3 py-1 border-border-gray mb-5" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
               <label>
                 Contraseña
               </label>
-              <input placeholder='Ej. 123456!' className="w-full border rounded px-3 py-1 border-border-gray mb-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+              <input placeholder='Ej. 123456!' required className="w-full border rounded px-3 py-1 border-border-gray mb-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
 
               <Link to="/changepassword">
               <a className='w-full flex justify-end  text-border-gray mb-10'>¿olvidaste tu contraseña?</a>
