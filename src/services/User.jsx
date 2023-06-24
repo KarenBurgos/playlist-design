@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -10,8 +11,9 @@ const loginService = (username, password) => {
     password: password
   };
 
-  axios.post(baseURL + '/login', data)
+  axios.post(baseURL + '/login', data) 
     .then((response) => {
+      console.log(data)
       const token = response.data.token;
       localStorage.setItem('token', token); // Guardar el token en localStorage
       console.log('Token:', token);
@@ -35,11 +37,16 @@ const signupService = (username, password, email) => {
   axios.post(baseURL + '/signup', data)
     .then((response) => {
       console.log(response)
-      toast.success('Successfully sesion!')
-
+      toast.success('Successfully created!')
     })
     .catch((error) => {
-      console.log('Error:', error.response.data);
+      if(error.response.data.password){
+        toast.error(`Error: ${ error.response.data.password[0]}`);
+        console.log('Error:', error.response.data.password[0]);
+      } else{
+        toast.error(`Error: ${ error.response.data.message}`);
+        console.log('Error:', error.response.data.message);
+      }
     });
 };
 
