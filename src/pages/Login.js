@@ -2,24 +2,35 @@ import image from '../assets/Music.gif'
 import wave1 from '../assets/wave1-login.png'
 import wave2 from '../assets/wave2-login.png'
 import backgroundTriangle from '../assets/background-decoration.png'
-import headphone from '../assets/headphones.png'
 import { TbHeadphonesFilled } from "react-icons/tb";
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { UserService } from '../services/User';
+import { loginService } from '../services/User';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');;
+  const [usernameError, setusernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
 
   const handleClick = (e) => {
     e.preventDefault();
 
-    UserService(username, password, setToken);
+    if(username.trim().length == 0 )
+      setusernameError(true);
+    else
+      setusernameError(false);
+
+    if(password.trim().length == 0 )
+      setPasswordError(true);
+    else
+      setPasswordError(false);
+
+
+    if(passwordError == false && usernameError == false)
+      loginService(username, password);
   };
 
 
@@ -32,15 +43,21 @@ function Login() {
 
           <div class="flex flex-col items-start w-1/2 p-12 h-full justify-items-center">
             <h1 className='font-bold text-2xl text-purple mb-10'>Inicio de sesion</h1>
-            <form className="flex flex-col w-5/6 items-start" onClick={handleClick}>
+            <form className="flex flex-col w-5/6 items-start" onSubmit={handleClick}>
               <label>
                 Usuario
               </label>
-              <input placeholder='Ej. gerardo' required className="w-full border rounded px-3 py-1 border-border-gray mb-5" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <label>
+              <input className={`w-full border rounded px-3 py-1 border-border-gray  ${usernameError && 'border-red'}`} type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              { usernameError && 
+                <p class="text-red">Este campo no puede estar vacio</p>
+              }
+              <label className="mt-4">
                 Contraseña
               </label>
-              <input placeholder='Ej. 123456!' required className="w-full border rounded px-3 py-1 border-border-gray mb-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+              <input className={`w-full border rounded px-3 py-1 border-border-gray  mb-2 ${usernameError && 'border-red'}`} type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+              { passwordError && 
+                <p class="text-red">Este campo no puede estar vacio</p>
+              }
 
               <Link to="/changepassword">
               <a className='w-full flex justify-end  text-border-gray mb-10'>¿olvidaste tu contraseña?</a>
@@ -48,10 +65,14 @@ function Login() {
 
               <button className='bg-purple px-6 py-2 rounded text-white' type='submit'>Iniciar sesión</button>
               <Link to="/createaccount">
-              <button className='bg-white text-purple border border-purple px-6 py-2 rounded' type='submit'>Crear cuenta</button>
+              <button className='bg-white text-purple border border-purple px-6 py-2 rounded'>Crear cuenta</button>
               </Link>
+              
             </form>
-            {token && <p>Token: {token}</p>}
+            <Toaster
+                  position="top-center"
+                  reverseOrder={false}
+                />
           </div>
 
           <div className='w-1/2 bg-purple-light relative'>

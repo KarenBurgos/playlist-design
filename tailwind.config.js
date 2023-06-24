@@ -17,6 +17,7 @@ module.exports = {
       'orange': '#FFDDD2',
       'orange-light':'#FFF2F2',
       'orange-dark':'#FFBCA7',
+      'red':'#910A0A',
     }
   },
   plugins: [],
