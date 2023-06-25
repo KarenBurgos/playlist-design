@@ -6,7 +6,7 @@ import { TbHeadphonesFilled } from "react-icons/tb";
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginService } from '../services/User';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 function Login() {
   const [username, setUsername] = useState('');

@@ -12,21 +12,21 @@ const config = {
     },
   };
 
-  const addSong = async (title, description) => {
-    const data = {
-      title: title,
-      description: description
-    };
+//   const addSong = async (title, description) => {
+//     const data = {
+//       title: title,
+//       description: description
+//     };
   
-    try {
-      const response = await axios.post(baseURL + '/', data, config);
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.log('Error:', error);
-      throw error;
-    }
-  };
+//     try {
+//       const response = await axios.post(baseURL + '/', data, config);
+//       console.log(response);
+//       return response;
+//     } catch (error) {
+//       console.log('Error:', error);
+//       throw error;
+//     }
+//   };
   
 
 const getSongs = (titlePlaylist) => {
@@ -46,4 +46,4 @@ const getSongs = (titlePlaylist) => {
       });
   };
 
-export { addSong, getSongs };
+export { getSongs };
