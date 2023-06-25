@@ -2,26 +2,31 @@ import Menu from "../components/menu";
 import wave1 from '../assets/wave1-home.png';
 import wave2 from '../assets/wave2-home.png';
 import Song from '../components/Song';
+import { useParams } from "react-router-dom";
 import AddSongForm from "../components/AddSongForm";
 import { getSongs } from "../services/SongxPlaylist";
 import { useEffect, useState } from "react";
 
 function Songs() {
     const [songs, setSongs] = useState([]);
-    
+    const params = useParams();
+    const [durationTotal, setDurationTotal] = useState(0);
 
     const calculateRemainingHeight = () => {
         const headerHeight = 200; // Ajusta esto según la altura del encabezado
         const footerHeight = 200; // Ajusta esto según la altura del pie de página
         const windowHeight = window.innerHeight;
         return windowHeight - headerHeight - footerHeight;
+
     };
 
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const data = await getSongs("prueba3");
-                setSongs(data.songs);
+                const data = await getSongs(params.code);
+                setSongs(data.songInfo);
+                setDurationTotal(data.totalDuration);
+                
             } catch (error) {
                 console.log('Error:', error);
             }
@@ -49,7 +54,7 @@ function Songs() {
                     <div>
                         <h1 className="text-lg font-semibold">Nombre playlist</h1>
                         {/* //TODO: Mostrar nombre de la playlist */}
-                        <h2 className="text-white">Duración total: {songs.duration}</h2>
+                        <h2 className="text-white">Duración total: {durationTotal} minutos</h2>
                         {/* //TODO: Mostrar duracion de la playlist */}
                     </div>
                     <button className="bg-purple-dark text-white px-8 py-2 rounded" onClick={handleAddSong}>
@@ -58,7 +63,7 @@ function Songs() {
                 </div>
                 <div className="mt-16 overflow-y-auto" style={{ maxHeight: `${calculateRemainingHeight()}px` }}>
                     {songs.map((song) => (
-                        <Song title={song}/>
+                        <Song title={song.title} duration={song.duration}/>
                     ))}
                 </div>
             </div>

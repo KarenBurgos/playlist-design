@@ -29,4 +29,21 @@ const config = {
     }
   };
 
-export { createSong };
+
+  const getSong = async (title) => {
+    return axios.get(baseURL + "/" + title, config)
+      .then((response) => {
+        return response.data
+    })
+    .catch((error) => {
+      toast.error("Error")
+      if (error.response) {
+        console.log('Error:', error.response.data);
+      } else {
+        console.log('Error:', error.message);
+      }
+      throw error; // Propagar el error para manejarlo en el componente
+    });
+  }
+
+export { createSong, getSong };

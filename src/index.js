@@ -19,7 +19,7 @@ root.render(
       <Route path="changepassword" element={<ChangePassword />}></Route>
       <Route path="createaccount" element={<CreateAccount />}></Route>
       <Route path="home" element={<Home />}></Route>
-      <Route path="songs" element={<Songs />}></Route>
+      <Route path="songs/:code" element={<Songs />}></Route>
     </Routes>
   </BrowserRouter>
 );

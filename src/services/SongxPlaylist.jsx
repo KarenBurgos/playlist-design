@@ -29,10 +29,12 @@ const config = {
 //   };
   
 
-const getSongs = (titlePlaylist) => {
-    return axios.get(baseURL + titlePlaylist +'/songs', config)
+const getSongs = (code) => {
+    return axios.get(baseURL + code +'/songs-with-date', config)
       .then((response) => {
         console.log(response.data)
+        console.log(response.data.totalDuration)
+        console.log(response.data.songInfo)
         return response.data
       })
       .catch((error) => {
