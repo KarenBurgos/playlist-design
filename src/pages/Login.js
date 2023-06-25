@@ -16,7 +16,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
 
     if(username.trim().length == 0 )
@@ -31,8 +31,12 @@ function Login() {
 
 
     if(passwordError == false && usernameError == false)
-      loginService(username, password);
+    try {
+      await loginService(username, password);
       navigate("/home")
+    } catch (error) {
+      console.log(error)
+    }
   };
 
 

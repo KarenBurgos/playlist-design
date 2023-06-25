@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 const baseURL = "http://localhost:8080/auth";
 
 const loginService = (username, password) => {
+  return new Promise((resolve, reject) => {
   const data = {
     username: username,
     password: password
@@ -19,12 +20,15 @@ const loginService = (username, password) => {
       console.log('Token:', token);
       console.log('Token en response:', response.data.token);
       toast.success('Successfully sesion!')
+      resolve()
 
     })
     .catch((error) => {
       toast.error("Usuario no encontrado")
       console.log('Error:', error.response.data);
+      reject(error);
     });
+  })
 };
 
 const signupService = (username, password, email) => {
