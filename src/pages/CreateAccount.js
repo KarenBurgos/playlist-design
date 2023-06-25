@@ -65,10 +65,8 @@ function CreateAccount() {
                             <input className="w-full border rounded px-3 py-1 border-border-gray mb-2" type="email" value={email} onChange={(e) => setEmail(e.target.value)} ></input>
 
                             <a className='w-full flex justify-end text-border-gray mb-10'><Link to="/" class="w-full">¿Ya tienes una cuenta?</Link></a>
-
-
-   
-                                <button className='bg-pink-dark px-6 py-2 rounded text-white' type='submit'>Crear cuenta</button>
+                            
+                            <button className='bg-pink-dark px-6 py-2 rounded text-white' type='submit'>Crear cuenta</button>
 
                         </form>
                     </div>

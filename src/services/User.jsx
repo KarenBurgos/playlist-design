@@ -14,6 +14,7 @@ const loginService = (username, password) => {
     .then((response) => {
       const token = response.data.token;
       localStorage.setItem('token', token); // Guardar el token en localStorage
+      localStorage.setItem('user', username); // Guardar el token en localStorage
       console.log('Token:', token);
       console.log('Token en response:', response.data.token);
       toast.success('Successfully sesion!')
