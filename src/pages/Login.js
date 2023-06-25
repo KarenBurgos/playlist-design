@@ -4,7 +4,7 @@ import wave2 from '../assets/wave2-login.png'
 import backgroundTriangle from '../assets/background-decoration.png'
 import { TbHeadphonesFilled } from "react-icons/tb";
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { loginService } from '../services/User';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -14,6 +14,7 @@ function Login() {
   const [usernameError, setusernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -31,6 +32,7 @@ function Login() {
 
     if(passwordError == false && usernameError == false)
       loginService(username, password);
+      navigate("/home")
   };
 
 
