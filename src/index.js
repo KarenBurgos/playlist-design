@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import ChangePassword from './pages/ChangePassword';
 import CreateAccount from './pages/CreateAccount'
 
+import Home from './pages/Home';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -15,6 +17,7 @@ root.render(
       <Route index element={<Login />}></Route>
       <Route path="changepassword" element={<ChangePassword />}></Route>
       <Route path="createaccount" element={<CreateAccount />}></Route>
+      <Route path="home" element={<Home />}></Route>
     </Routes>
   </BrowserRouter>
 );
