@@ -1,7 +1,7 @@
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
-const baseURL = "http://localhost:8080/song";
+const baseURL = "http://localhost:8080/song/";
 const token = localStorage.getItem("token");
 
 
@@ -18,7 +18,7 @@ const config = {
     };
   
     try {
-      const response = await axios.post(baseURL + '/', data, config);
+      const response = await axios.post(baseURL , data, config);
       console.log(response);
       toast.success('Cancion creada con exito')
       return response;
@@ -31,7 +31,7 @@ const config = {
 
 
   const getSong = async (title) => {
-    return axios.get(baseURL + "/" + title, config)
+    return axios.get(baseURL + title, config)
       .then((response) => {
         return response.data
     })
@@ -46,4 +46,20 @@ const config = {
     });
   }
 
-export { createSong, getSong };
+  const deleteSong = (title) => {
+    axios.delete(baseURL + title, config)
+      .then(() =>{
+        toast.success('Eliminado con exito')
+      })
+      .catch((error) => {
+        toast.error("Error")
+        if (error.response) {
+          console.log('Error:', error.response.data);
+        } else {
+          console.log('Error:', error.message);
+        }
+        throw error; // Propagar el error para manejarlo en el componente
+      });
+  }
+
+export { createSong, getSong, deleteSong};
