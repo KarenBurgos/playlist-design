@@ -72,9 +72,14 @@ function Home() {
       const response = await addPlaylist(data.title, data.description, token);
       console.log(response);
       setShowPlaylistForm(false);
-      // Actualizar las playlists después de añadir una nueva
-      const updatedPlaylists = await getPlaylists();
-      setPlaylists(updatedPlaylists);
+      getPlaylists(token)
+        .then((data) => {
+          setPlaylists(data);
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+        });
+      
     } catch (error) {
       console.log("Error:", error);
     }
