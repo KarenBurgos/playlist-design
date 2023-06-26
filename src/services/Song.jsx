@@ -12,7 +12,7 @@ const addSongs = async (title, duration, token) => {
   };
   const data = {
     title: title,
-    duration: duration,
+    duration: parseInt(duration),
   };
 
   try {
@@ -26,14 +26,14 @@ const addSongs = async (title, duration, token) => {
   }
 };
 
-const getSongs = (token, size) => {
+const getSongs = (token, size, titlePart) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   return axios
-    .get(baseURL + `/?size=${size}`, config)
+    .get(baseURL + `/?size=${size}&titlePart=${titlePart}`, config)
     .then((response) => {
       console.log(response.data);
       return response.data;
