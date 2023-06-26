@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const baseURL = "http://localhost:8080/songxplaylist";
