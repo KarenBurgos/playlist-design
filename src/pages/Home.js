@@ -12,17 +12,23 @@ import { addPlaylist, getPlaylists } from "../services/Playlist";
 function Home() {
     const [playlists, setPlaylists] = useState([]);
     const [showForm, setShowForm] = useState(false); // Estado para mostrar/ocultar el formulario
-    const token = localStorage.getItem("token");
+    const [token, setToken] = useState(localStorage.getItem("token")); // Estado para almacenar el token
+    const resetPlaylists = () => {
+        setPlaylists([]);
+      };
 
     useEffect(() => {
-        getPlaylists()
-          .then((data) => {
-            setPlaylists(data);
-          })
-          .catch((error) => {
-            console.log('Error:', error);
-          });
-      }, [playlists.length]);
+        if (token) {
+            resetPlaylists();
+            getPlaylists(token)
+                .then((data) => {
+                    setPlaylists(data);
+                })
+                .catch((error) => {
+                    console.log('Error:', error);
+                });
+        }
+    }, [token]); // Dependencia en el token
 
     const handleAddPlaylist = () => {
         setShowForm(true);
@@ -34,7 +40,7 @@ function Home() {
 
     const handleSubmitForm = async (data) => {
         try {
-          const response = await addPlaylist(data.title, data.description);
+          const response = await addPlaylist(data.title, data.description, token);
           console.log(response);
           toast.success('Playlist added!');
           setShowForm(false);
@@ -50,7 +56,7 @@ function Home() {
 
     return (
         <div
-            className="h-screen bg-orange relative"
+            className="h-max bg-orange relative"
             style={{ backgroundImage: `url(${backgroundTriangle})` }}
         >
             <Toaster/>
@@ -72,7 +78,7 @@ function Home() {
                     </button>
                     {playlists.map((playlist) => (
                         <Playlist
-                            key={playlist.code}
+                            id={playlist.code}
                             title={playlist.title}
                             description={playlist.description}
                         />

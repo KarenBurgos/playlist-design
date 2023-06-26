@@ -3,6 +3,7 @@ import { TbHeadphonesFilled, TbUserCircle } from "react-icons/tb";
 import SongForm from "./CreateSongForm";
 import { createSong } from "../services/SongService";
 import { Toaster } from 'react-hot-toast';
+import { Link } from "react-router-dom";
 
 function Menu( ) {
     const [song, setSong] = useState([]);
@@ -32,9 +33,11 @@ function Menu( ) {
                 <h2 className="row-span-1 col-span-1">grupo 4</h2>
             </div>
             <div className="flex justify-around w-1/4">
-                <div className="font-semibold text-lg cursor-pointer">
-                    Playlist
-                </div>
+                <Link to="/home">
+                    <div className="font-semibold text-lg cursor-pointer">
+                        Playlist
+                    </div>
+                </Link>
                 <div className="font-semibold text-lg cursor-pointer"  onClick={handleAddSong}>
                     Crear Canción
                 </div>

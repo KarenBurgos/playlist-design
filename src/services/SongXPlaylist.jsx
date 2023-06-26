@@ -3,21 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-const baseURL = "http://localhost:8080/playlist";
+const baseURL = "http://localhost:8080/songxplaylist";
 
-const addPlaylist = async (title, description, token) => {
+const addSongToPlaylist = async (playlistCode, songCode, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   const data = {
-    title: title,
-    description: description,
+    playlistCode: playlistCode,
+    songCode: songCode,
   };
 
   try {
-    const response = await axios.post(baseURL + "/", data, config);
+    const response = await axios.post(baseURL + `/${playlistCode}/songs/${songCode}`, data, config);
     console.log(response);
     return response;
   } catch (error) {
@@ -26,17 +26,17 @@ const addPlaylist = async (title, description, token) => {
   }
 };
 
-const getPlaylists = (token) => {
+const getPlaylistsWithSongs = (playlistCode, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   return axios
-    .get(baseURL + "/user", config)
+    .get(baseURL + `/${playlistCode}/songs-with-date`, config)
     .then((response) => {
-      console.log(response.data.content);
-      return response.data.content;
+      console.log(response.data);
+      return response.data;
     })
     .catch((error) => {
       toast.error("Error");
@@ -49,4 +49,4 @@ const getPlaylists = (token) => {
     });
 };
 
-export { addPlaylist, getPlaylists };
+export { addSongToPlaylist, getPlaylistsWithSongs };

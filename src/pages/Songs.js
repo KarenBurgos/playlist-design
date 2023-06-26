@@ -4,7 +4,7 @@ import wave2 from '../assets/wave2-home.png';
 import Song from '../components/Song';
 import { useParams } from "react-router-dom";
 import AddSongForm from "../components/AddSongForm";
-import { getSongs } from "../services/SongxPlaylist";
+import { getPlaylistsWithSongs } from "../services/SongXPlaylist";
 import { useEffect, useState } from "react";
 
 
@@ -24,7 +24,8 @@ function Songs() {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const data = await getSongs(params.code);
+                console.log(params.code)
+                const data = await getPlaylistsWithSongs(params.code);
                 setSongs(data.songInfo);
                 setDurationTotal(data.totalDuration);
                 
@@ -69,7 +70,7 @@ function Songs() {
                 </div>
             </div>
             {showForm && ( // Mostrar el formulario si showForm es verdadero
-                    <AddSongForm onClose={handleCloseForm} />
+                    <AddSongForm onClose={handleCloseForm} playlistId={params.code} />
                 )} 
 
             <img src={wave1} className="absolute -z-0 bottom-0 w-full h-1/3" />
