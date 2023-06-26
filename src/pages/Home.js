@@ -8,10 +8,16 @@ import { toast, Toaster } from "react-hot-toast";
 import PlaylistForm from "../components/PlaylistForm"; // Importamos el formulario
 
 import { addPlaylist, getPlaylists } from "../services/Playlist";
+import { addSongs, getSongs } from "../services/Song";
 
 function Home() {
     const [playlists, setPlaylists] = useState([]);
-    const [showForm, setShowForm] = useState(false); // Estado para mostrar/ocultar el formulario
+    const [songs, setSongs] = useState([]);
+    const [size, setSize] = useState(10);
+
+    const [showPlaylistForm, setShowPlaylistForm] = useState(false); // Estado para mostrar/ocultar el formulario
+    const [showSongForm, setShowSongForm] = useState(false); // Estado para mostrar/ocultar el formulario
+
     const [token, setToken] = useState(localStorage.getItem("token")); // Estado para almacenar el token
     const resetPlaylists = () => {
         setPlaylists([]);
@@ -30,12 +36,22 @@ function Home() {
         }
     }, [token]); // Dependencia en el token
 
+    useEffect(() => {
+        getSongs(token, size)
+                .then((data) => {
+                    setSongs(data);
+                })
+                .catch((error) => {
+                    console.log('Error:', error);
+                });
+    }, [size]); // Dependencia en el size
+
     const handleAddPlaylist = () => {
-        setShowForm(true);
+        setShowPlaylistForm(true);
     };
 
     const handleCloseForm = () => {
-        setShowForm(false);
+        setShowPlaylistForm(false);
     };
 
     const handleSubmitForm = async (data) => {
@@ -43,7 +59,7 @@ function Home() {
           const response = await addPlaylist(data.title, data.description, token);
           console.log(response);
           toast.success('Playlist added!');
-          setShowForm(false);
+          setShowPlaylistForm(false);
           // Actualizar las playlists después de añadir una nueva
           const updatedPlaylists = await getPlaylists();
           setPlaylists(updatedPlaylists);
@@ -97,9 +113,16 @@ function Home() {
                         <BiPlusCircle className="inline-block mr-2" />
                         Añadir Canción
                     </button>
-                    <Song title="Song 1" duration="5:00"/>
+                    {songs.map((song) => (
+                        <Song
+                            id={song.code}
+                            title={song.title}
+                            duration={song.duration}
+                        />
+                    ))}
+                    <button className="bg-red border-x-orange-dark text-white rounded-lg p-4 mt-3 w-full" onClick={(e) => {e.preventDefault(); setSize(size+10)}}>Cargar más</button>
                 </div>
-                {showForm && ( // Mostrar el formulario si showForm es verdadero
+                {showPlaylistForm && ( // Mostrar el formulario si showPlaylistForm es verdadero
                     <PlaylistForm onClose={handleCloseForm} onSubmit={handleSubmitForm} />
                 )}
             </div>
