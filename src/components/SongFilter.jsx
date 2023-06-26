@@ -36,9 +36,6 @@ const searchHandler = async () => {
         <ul>
           <h2>{songs.title}</h2>
           <h2>{songs.duration}</h2>
-           {/* {songs.map((song) => (
-             <li key={song.code}>{song.title} {song.duration}</li>
-           ))} */}
         </ul>
       )}
     </div>

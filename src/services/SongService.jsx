@@ -62,4 +62,21 @@ const config = {
       });
   }
 
-export { createSong, getSong, deleteSong};
+  const editSong = (currentTitle, newTitle, duration) => {
+    const data = {
+      title: currentTitle,
+      title: newTitle,
+      duration: duration
+    }
+    console.log(currentTitle, newTitle, duration)
+    axios.put(baseURL + currentTitle, data, config)
+      .then(()=>{
+        toast.success('Canción editada con exito')
+      })
+      .catch((error) =>{
+        toast.error("error: " + {error})
+        throw error;
+      })
+  } 
+
+export { createSong, getSong, deleteSong, editSong};
