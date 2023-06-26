@@ -14,12 +14,9 @@ const config = {
   };
 
 const addSongToPlaylist = async (playlistCode, songCode) => {
-
-
   const data = {
     songCode: songCode,
     playlistCode: playlistCode,
-    
   };
 
   try {
@@ -51,4 +48,28 @@ const getPlaylistsWithSongs = (playlistCode) => {
     });
 };
 
-export { addSongToPlaylist, getPlaylistsWithSongs };
+const deleteSongFromPlaylist = (playlistId, songId) => {
+  
+  console.log(playlistId)
+  console.log(songId)
+  const data = {
+    songId: songId,
+    playlistId: playlistId,
+  };
+  
+  axios.delete(baseURL + playlistId + "/songs/" + songId, data, config)
+    .then(() =>{
+      toast.success('Canción eliminada de esta playlist con exito')
+    })
+    .catch((error) => {
+      toast.error("Error")
+      if (error.response) {
+        console.log('Error:', error.response.data);
+      } else {
+        console.log('Error:', error.message);
+      }
+      throw error; // Propagar el error para manejarlo en el componente
+    });
+}
+
+export { addSongToPlaylist, getPlaylistsWithSongs, deleteSongFromPlaylist };

@@ -24,9 +24,9 @@ function Songs() {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                console.log(params.code)
                 const data = await getPlaylistsWithSongs(params.code);
                 setSongs(data.songInfo);
+                console.log(data.songInfo)
                 setDurationTotal(data.totalDuration);
                 
             } catch (error) {

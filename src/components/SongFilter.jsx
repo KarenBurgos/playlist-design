@@ -31,7 +31,7 @@ const searchHandler = async () => {
         className="w-full border rounded px-3 py-1 border-border-gray"
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={searchHandler}>Search</button>
+      <button className='bg-purple-dark text-white px-8 py-2 rounded' onClick={searchHandler}>Search</button>
 
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
@@ -39,7 +39,6 @@ const searchHandler = async () => {
 
         
         <ul onClick={addSong}>
-          <h1>{songs.code}</h1>
           <h2>{songs.title}</h2>
           <h2>{songs.duration}</h2>
         </ul>

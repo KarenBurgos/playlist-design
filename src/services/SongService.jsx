@@ -77,6 +77,6 @@ const config = {
         toast.error("error: " + {error})
         throw error;
       })
-  } 
+  }
 
 export { createSong, getSong, deleteSong, editSong};
