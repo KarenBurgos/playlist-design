@@ -14,10 +14,11 @@ import { addSongs, getSongs } from "../services/Song";
 
 function Home() {
   const [playlists, setPlaylists] = useState([]);
-  const [songs, setSongs] = useState([]);
+  const [titlePartPlaylist, setTitlePartPlaylist] = useState('');
 
+  const [songs, setSongs] = useState([]);
   const [size, setSize] = useState(10);
-  const [titlePart, setTitlePart] = useState('');
+  const [titlePartSong, setTitlePartSong] = useState('');
 
 
   const [showPlaylistForm, setShowPlaylistForm] = useState(false); // Estado para mostrar/ocultar el formulario
@@ -31,7 +32,7 @@ function Home() {
   useEffect(() => {
     if (token) {
       resetPlaylists();
-      getPlaylists(token)
+      getPlaylists(token, titlePartPlaylist)
         .then((data) => {
           setPlaylists(data);
         })
@@ -39,17 +40,17 @@ function Home() {
           console.log("Error:", error);
         });
     }
-  }, [token]); // Dependencia en el token
+  }, [token, titlePartPlaylist]); // Dependencia en el token
 
   useEffect(() => {
     try {
-      getSongs(token, size, titlePart).then((data) => {
+      getSongs(token, size, titlePartSong).then((data) => {
         setSongs(data);
       });
     } catch (error) {
       console.log("Error:", error);
     }
-  }, [token, size, titlePart]); // Dependencia en el size
+  }, [token, size, titlePartSong]); // Dependencia en el size
 
   const handleAddPlaylist = () => {
     setShowPlaylistForm(true);
@@ -110,6 +111,7 @@ function Home() {
             id="playlistInput"
             placeholder="Buscar playlist"
             className="border border-gray-300 rounded-md px-2 py-1 mr-2"
+            onChange={(e) => setTitlePartPlaylist(e.target.value)}
           />
           <button
             className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded"
@@ -134,7 +136,7 @@ function Home() {
             id="songInput"
             placeholder="Buscar canción"
             className="border border-gray-300 rounded-md px-2 py-1 mr-2"
-            onChange={(e) => setTitlePart(e.target.value)}
+            onChange={(e) => setTitlePartSong(e.target.value)}
           />
           <button
             className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded"

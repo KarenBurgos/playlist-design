@@ -25,14 +25,14 @@ const addPlaylist = async (title, description, token) => {
   }
 };
 
-const getPlaylists = (token) => {
+const getPlaylists = (token, titlePart) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   return axios
-    .get(baseURL + "/user", config)
+    .get(baseURL + `/user?titlePart=${titlePart}`, config)
     .then((response) => {
       console.log(response.data.content);
       return response.data.content;
