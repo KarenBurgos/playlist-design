@@ -4,10 +4,10 @@ import Song from "./Song";
 
 import { getPlaylistsWithSongs } from "../services/SongXPlaylist";
 
-function PlaylistInfo({ id, onClose }) {
+function PlaylistInfo({ id, onClose, songAdded }) {
   const [token, setToken] = useState(localStorage.getItem("token")); // Estado para almacenar el token
   const [playlist, setPlaylist] = useState();
-
+  
   useEffect(() => {
     if (token) {
       getPlaylistsWithSongs(id, token)
@@ -18,7 +18,7 @@ function PlaylistInfo({ id, onClose }) {
           console.log("Error:", error);
         });
     }
-  }, [id, token]); // Dependencia en el token
+  }, [id, token, songAdded]); // Dependencia en el token
 
   return (
     <div key={id} className="ml-5">
