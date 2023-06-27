@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Song from "../components/Song";
 import { getSongs } from "../services/Song";
 
-function AddSongToPlaylistForm({ onClose, onSubmit }) {
+function AddSongToPlaylistForm({ onClose, onSubmit, onSongAdded }) {
   const [title, setTitle] = useState('');
   const [size, setSize] = useState(5);
   const [songs, setSongs] = useState([]);
@@ -12,7 +12,10 @@ function AddSongToPlaylistForm({ onClose, onSubmit }) {
   
   const handleClickSong = (code) => {
     onSubmit({ code});
+    onSongAdded();
   };
+
+  
 
   useEffect(() => {
     try {
