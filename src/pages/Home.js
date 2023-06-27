@@ -25,13 +25,10 @@ function Home() {
   const [showSongForm, setShowSongForm] = useState(false); // Estado para mostrar/ocultar el formulario
 
   const [token, setToken] = useState(localStorage.getItem("token")); // Estado para almacenar el token
-  const resetPlaylists = () => {
-    setPlaylists([]);
-  };
 
   useEffect(() => {
     if (token) {
-      resetPlaylists();
+      
       getPlaylists(token, titlePartPlaylist)
         .then((data) => {
           setPlaylists(data);
@@ -40,7 +37,7 @@ function Home() {
           console.log("Error:", error);
         });
     }
-  }, [token, titlePartPlaylist]); // Dependencia en el token
+  }, [token, titlePartPlaylist, showPlaylistForm]); // Dependencia en el token
 
   useEffect(() => {
     try {
@@ -72,15 +69,7 @@ function Home() {
     try {
       const response = await addPlaylist(data.title, data.description, token);
       console.log(response);
-      setShowPlaylistForm(false);
-      getPlaylists(token)
-        .then((data) => {
-          setPlaylists(data);
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
-      
+      setShowPlaylistForm(false);      
     } catch (error) {
       console.log("Error:", error);
     }
