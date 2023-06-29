@@ -8,8 +8,8 @@ import { Input } from 'antd';
 
 import waves from "../assets/waves-home.png";
 import headphones from "../assets/headphones.png";
-import image from '../assets/music2.png'
-import loadMoreImage from '../assets/load-more.png'
+import image from '../assets/music2.png';
+import loadMoreImage from '../assets/load-more.png';
 
 import SongForm from "../components/SongForm"; // Importamos el formulario song
 
