@@ -16,6 +16,9 @@ const addSongToPlaylist = async (playlistCode, songCode, token) => {
     songCode: songCode,
   };
 
+  console.log(playlistCode)
+  console.log(songCode)
+
   try {
     const response = await axios.post(baseURL + `/${playlistCode}/songs/${songCode}`, data, config);
     console.log(response);
