@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { RiPlayList2Line, RiMusic2Line } from "react-icons/ri";
-import { BiPlusCircle } from "react-icons/bi";
-import backgroundTriangle from "../assets/background-decoration-orange.png";
-import Song from "../components/Song";
 import Playlist from "../components/Playlist";
 import { toast, Toaster } from "react-hot-toast";
+import { Link, Outlet } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
+import { Input } from 'antd';
+
+import waves from "../assets/waves-home.png";
+import headphones from "../assets/headphones.png";
+import image from '../assets/music.png'
 
 import PlaylistForm from "../components/PlaylistForm"; // Importamos el formulario playlist
-import SongForm from "../components/SongForm"; // Importamos el formulario song
-
 import { addPlaylist, getPlaylists } from "../services/Playlist";
-import { addSongs, getSongs } from "../services/Song";
+
 
 function Home() {
   const [playlists, setPlaylists] = useState([]);
   const [titlePartPlaylist, setTitlePartPlaylist] = useState('');
 
-  const [songs, setSongs] = useState([]);
-  const [size, setSize] = useState(10);
-  const [titlePartSong, setTitlePartSong] = useState('');
-
-
   const [showPlaylistForm, setShowPlaylistForm] = useState(false); // Estado para mostrar/ocultar el formulario
-  const [showSongForm, setShowSongForm] = useState(false); // Estado para mostrar/ocultar el formulario
 
   const [token, setToken] = useState(localStorage.getItem("token")); // Estado para almacenar el token
   const resetPlaylists = () => {
@@ -42,15 +38,6 @@ function Home() {
     }
   }, [token, titlePartPlaylist]); // Dependencia en el token
 
-  useEffect(() => {
-    try {
-      getSongs(token, size, titlePartSong).then((data) => {
-        setSongs(data);
-      });
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  }, [token, size, titlePartSong]); // Dependencia en el size
 
   const handleAddPlaylist = () => {
     setShowPlaylistForm(true);
@@ -60,13 +47,6 @@ function Home() {
     setShowPlaylistForm(false);
   };
 
-  const handleAddSong = () => {
-    setShowSongForm(true);
-  };
-
-  const handleCloseSongForm = () => {
-    setShowSongForm(false);
-  };
 
   const handleSubmitPlaylistForm = async (data) => {
     try {
@@ -80,45 +60,39 @@ function Home() {
         .catch((error) => {
           console.log("Error:", error);
         });
-      
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
 
-  const handleSubmitSongForm = async (data) => {
-    try {
-      const response = await addSongs(data.title, data.duration, token);
-      console.log(response);
-      setShowSongForm(false);
-      
     } catch (error) {
       console.log("Error:", error);
     }
   };
 
   return (
-    <div
-      className="h-max bg-orange relative"
-      style={{ backgroundImage: `url(${backgroundTriangle})` }}
-    >
+    <div className="min-h-screen bg-gradient-to-b from-pastel-purple to-pink flex flex-col relative">
       <Toaster />
-      <div className="container mx-auto p-4 z-40">
-        <h1 className="text-2xl font-bold mb-4">Playlists</h1>
-        <div id="playlists" className="mb-8">
-          <input
-            type="text"
-            id="playlistInput"
-            placeholder="Buscar playlist"
-            className="border border-gray-300 rounded-md px-2 py-1 mr-2"
-            onChange={(e) => setTitlePartPlaylist(e.target.value)}
-          />
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded"
-            onClick={handleAddPlaylist} // Manejar clic en el botón "Añadir Playlist"
-          >
-            <BiPlusCircle className="inline-block mr-2" />
-            Añadir Playlist
+      <nav className="pt-4 px-8 space-x-40 flex justify-start items-center">
+        <div className="grid grid-cols-2 grid-rows-2">
+          <div className="row-span-2 col-span-1">
+            <img src={headphones} alt="logo" />
+          </div>
+          <div className="col-span-1 row-span-2 flex flex-col justify-center">
+            <h1>Playlist</h1>
+            <p className="text-sm">Grupo 4</p>
+          </div>
+        </div>
+        <div className="flex items-left space-x-1/2">
+          <button className="text-purple-600 px-4 py-2 rounded hover:text-white">
+            <Link to="/home">Playlist</Link>
+          </button>
+          <button className="text-purple-600 px-4 py-2 rounded hover:text-white">
+            <Link to="/addsong">Agregar Canción</Link>
+          </button>
+        </div>
+      </nav>
+      <div className="flex flex-col items-left">
+        <div className="flex items-center mb-4 px-12 pt-8">
+          <h1 className="text-black text-lg font-bold mr-4">Playlist</h1>
+          <button className="bg-middle-purple text-white text-xs px-2 py-1 rounded" onClick={handleAddPlaylist}>
+            Agregar nueva playlist
           </button>
           {playlists.map((playlist) => (
             <Playlist
@@ -128,35 +102,25 @@ function Home() {
             />
           ))}
         </div>
-        <hr />
-        <h1 className="text-2xl font-bold mb-4">Canciones</h1>
-        <div id="songs" className="mb-8">
-          <input
-            type="text"
-            id="songInput"
-            placeholder="Buscar canción"
-            className="border border-gray-300 rounded-md px-2 py-1 mr-2"
-            onChange={(e) => setTitlePartSong(e.target.value)}
-          />
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded"
-            onClick={handleAddSong}
-          >
-            <BiPlusCircle className="inline-block mr-2" />
-            Añadir Canción
-          </button>
-          {songs.map((song) => (
-            <Song id={song.code} title={song.title} duration={song.duration} />
-          ))}
-          <button
-            className="bg-red border-x-orange-dark text-white rounded-lg p-4 mt-3 w-full"
-            onClick={(e) => {
-              e.preventDefault();
-              setSize(size + 10);
-            }}
-          >
-            Cargar más
-          </button>
+        <div className="flex items-center mb-4 px-7">
+          <div class="w-full p-2 bg-grayFilter flex items-center justify-between rounded font-montserrat">
+            <div class="flex items-center gap-4 pl-4">
+              <FiSearch size={24} />
+              <Input placeholder="Buscar Playlist..." bordered={false} style={{ backgroundColor: '#F6E2F8', height: '4vh', width: '30vw', borderRadius: '0.2rem' }} onChange={(e) => setTitlePartPlaylist(e.target.value)} />
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center mb-4 px-14">
+          <hr className="w-5/12 border-white" />
+        </div>
+      </div>
+      <div className="absolute top-10 right-14">
+        <img src={image} alt="imagen" className="max-w-full" />
+      </div>
+      <div className="flex-1"></div>
+      <div className="flex justify-between">
+        <div className="w-full">
+          <img src={waves} alt="onda 1" className="w-full" />
         </div>
         {showPlaylistForm && ( // Mostrar el formulario si showPlaylistForm es verdadero
           <PlaylistForm
@@ -164,15 +128,11 @@ function Home() {
             onSubmit={handleSubmitPlaylistForm}
           />
         )}
-        {showSongForm && ( // Mostrar el formulario si showSongForm es verdadero
-          <SongForm
-            onClose={handleCloseSongForm}
-            onSubmit={handleSubmitSongForm}
-          />
-        )}
       </div>
     </div>
   );
-}
+
+};
+
 
 export default Home;

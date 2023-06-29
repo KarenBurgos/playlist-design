@@ -89,7 +89,6 @@ function Login() {
               <h1 className='col-span-1 row-span-1'>Playlist</h1>
               <h2 className='col-span-1 row-span-1'>Grupo 4</h2>
             </div>
-
             <img src={image} className='w-5/6 h-auto self-center' />
             <div className='w-full aboslute bottom-0 left-0'>
               <img src={wave1} className="absolute -z-0 bottom-0 w-full h-1/4" />
