@@ -61,9 +61,9 @@ function Playlist({ id, title, description, onClick }) {
   }, [id, token, songAdded]); // Dependencia en el token
 
   return (
-    <div className="bg-white rounded-lg p-4 mt-3">
+    <div className="bg-pastel-pink rounded-lg p-4 mt-3">
       <div
-        className="bg-white rounded-lg p-4 flex items-center justify-between"
+        className="bg-pastel-pink rounded-lg p-4 flex items-center justify-between"
         onClick={handleInfo}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseLeave}
@@ -79,7 +79,7 @@ function Playlist({ id, title, description, onClick }) {
         {showIcons && (
           <div className="flex">
             <PiMusicNotesPlusBold
-              className="text-blue-500 text-2xl mr-2 cursor-pointer"
+              className="text-blue-500 text-2xl mx-2 ml-4 cursor-pointer"
               onClick={handleShowForm}
             />
           </div>

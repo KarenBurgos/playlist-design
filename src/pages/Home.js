@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { RiPlayList2Line, RiMusic2Line } from "react-icons/ri";
 import Playlist from "../components/Playlist";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, Outlet } from "react-router-dom";
@@ -17,6 +16,7 @@ import { addPlaylist, getPlaylists } from "../services/Playlist";
 function Home() {
   const [playlists, setPlaylists] = useState([]);
   const [titlePartPlaylist, setTitlePartPlaylist] = useState('');
+  const [expandedPlaylist, setExpandedPlaylist] = useState(null); // Estado para almacenar la playlist expandida
 
   const [showPlaylistForm, setShowPlaylistForm] = useState(false); // Estado para mostrar/ocultar el formulario
 
@@ -24,7 +24,6 @@ function Home() {
 
   useEffect(() => {
     if (token) {
-      
       getPlaylists(token, titlePartPlaylist)
         .then((data) => {
           setPlaylists(data);
@@ -35,7 +34,6 @@ function Home() {
     }
   }, [token, titlePartPlaylist, showPlaylistForm]); // Dependencia en el token
 
-
   const handleAddPlaylist = () => {
     setShowPlaylistForm(true);
   };
@@ -44,21 +42,30 @@ function Home() {
     setShowPlaylistForm(false);
   };
 
-
   const handleSubmitPlaylistForm = async (data) => {
     try {
       const response = await addPlaylist(data.title, data.description, token);
       console.log(response);
+      setShowPlaylistForm(false);
+      getPlaylists(token)
+        .then((data) => {
+          setPlaylists(data);
+        })
+        .catch((error) => {
+          console.log("Error:", error);
+        });
 
-      setShowPlaylistForm(false);      
     } catch (error) {
       console.log("Error:", error);
     }
   };
 
-    } catch (error) {
-      console.log("Error:", error);
-    }
+  const handlePlaylistHover = (playlistId) => {
+    setExpandedPlaylist(playlistId);
+  };
+
+  const handlePlaylistLeave = () => {
+    setExpandedPlaylist(null);
   };
 
   return (
@@ -89,17 +96,10 @@ function Home() {
           <button className="bg-middle-purple text-white text-xs px-2 py-1 rounded" onClick={handleAddPlaylist}>
             Agregar nueva playlist
           </button>
-          {playlists.map((playlist) => (
-            <Playlist
-              id={playlist.code}
-              title={playlist.title}
-              description={playlist.description}
-            />
-          ))}
         </div>
         <div className="flex items-center mb-4 px-7">
-          <div class="w-full p-2 bg-grayFilter flex items-center justify-between rounded font-montserrat">
-            <div class="flex items-center gap-4 pl-4">
+          <div className="w-full p-2 flex items-center justify-between rounded font-montserrat">
+            <div className="flex items-center gap-4 pl-4">
               <FiSearch size={24} />
               <Input placeholder="Buscar Playlist..." bordered={false} style={{ backgroundColor: '#F6E2F8', height: '4vh', width: '30vw', borderRadius: '0.2rem' }} onChange={(e) => setTitlePartPlaylist(e.target.value)} />
             </div>
@@ -107,6 +107,23 @@ function Home() {
         </div>
         <div className="flex items-center mb-4 px-14">
           <hr className="w-5/12 border-white" />
+        </div>
+        <div className="flex flex-col items-start mb-4 px-14 w-11/12">
+          {playlists.map((playlist) => (
+            <div
+              key={playlist.code}
+              onMouseEnter={() => handlePlaylistHover(playlist.code)}
+              onMouseLeave={handlePlaylistLeave}
+              style={{ width: '500px', height:'170px',transition: 'width 0.3s ease' }}
+            >
+              <Playlist
+                id={playlist.code}
+                title={playlist.title}
+                description={playlist.description}
+                expanded={expandedPlaylist === playlist.code}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div className="absolute top-10 right-14">
@@ -126,8 +143,8 @@ function Home() {
       </div>
     </div>
   );
-
 };
 
-
 export default Home;
+
+

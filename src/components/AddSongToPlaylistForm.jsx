@@ -34,7 +34,7 @@ function AddSongToPlaylistForm({ onClose, onSubmit, onSongAdded }) {
         <form> 
           {/* onSubmit={handleSubmit} */}
           <div className="mb-4">
-            <label htmlFor="title" className="block font-semibold mb-1">Title:</label>
+            <label htmlFor="title" className="block font-semibold mb-1">Titulo:</label>
             <input
               type="text"
               id="songInput"
